@@ -17,7 +17,14 @@ public class PriceGenerator implements PriceProvider {
 
     private PriceGenerator() {
         engine = new HashMap<>();
+        addPriceEngines();
+    }
 
+    public static PriceGenerator create() {
+        return new PriceGenerator();
+    }
+
+    private void addPriceEngines() {
         // BTC/USD
         PriceEngine btcUsd = CryptoPriceEngine.create(Initial.valueOf(30000.0d), Volatility.range(1, 15));
         engine.put(CryptoPair.of("BTC", "USD"), btcUsd);
@@ -49,12 +56,8 @@ public class PriceGenerator implements PriceProvider {
         // ZIL/USD
         PriceEngine zilUsd = CryptoPriceEngine.create(Initial.valueOf(0.0690d), Volatility.range(1, 10));
         engine.put(CryptoPair.of("XRP", "USD"), zilUsd);
-
     }
 
-    public static PriceGenerator create() {
-        return new PriceGenerator();
-    }
 
     @Override
     public BigDecimal getPrice(CryptoPair pair) {
